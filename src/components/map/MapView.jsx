@@ -8,7 +8,12 @@ import { useEffect, useRef } from "react";
 import CallToActionControl from "./CallToActionControl";
 import GeographyTitle from "./GeographyTitle";
 
-const MapView = ({ selectedGeography, selectedVariable, comparisonVariable, setIsTourOpen }) => {
+const MapView = ({
+  selectedGeography,
+  selectedVariable,
+  comparisonVariable,
+  setIsTourOpen,
+}) => {
   const mapSettings = appConfig.geographies[selectedGeography].mapSettings;
   const center = mapSettings.center;
 
@@ -18,17 +23,21 @@ const MapView = ({ selectedGeography, selectedVariable, comparisonVariable, setI
       if (!map1 || !map2) return;
 
       const syncMaps = (source, target) => {
-        source.on('moveend', () => {
+        source.on("moveend", () => {
           if (!source._syncing) {
             target._syncing = true;
-            target.setView(source.getCenter(), source.getZoom(), { animate: false });
+            target.setView(source.getCenter(), source.getZoom(), {
+              animate: false,
+            });
             target._syncing = false;
           }
         });
-        source.on('zoomend', () => {
+        source.on("zoomend", () => {
           if (!source._syncing) {
             target._syncing = true;
-            target.setView(source.getCenter(), source.getZoom(), { animate: false });
+            target.setView(source.getCenter(), source.getZoom(), {
+              animate: false,
+            });
             target._syncing = false;
           }
         });
@@ -55,8 +64,12 @@ const MapView = ({ selectedGeography, selectedVariable, comparisonVariable, setI
 
   return (
     <div className="grid grid-cols-2 col-span-6 relative h-screen">
-      <div className={comparisonVariable ? "col-span-1 h-screen" : "col-span-2 h-screen"}>
-      <MapContainer
+      <div
+        className={
+          comparisonVariable ? "col-span-1 h-screen" : "col-span-2 h-screen"
+        }
+      >
+        <MapContainer
           ref={mapRef1}
           // key={selectedGeography} // syncs but uncentered, doesn't work on new geos unless comparison var is deselected and reselected
           key={`${selectedGeography}-${comparisonVariable}`} // centered but doesn't sync at all
@@ -89,7 +102,8 @@ const MapView = ({ selectedGeography, selectedVariable, comparisonVariable, setI
             selectedVariable={selectedVariable}
           />
 
-          {!comparisonVariable && <FeaturesPanel />}
+          {/* Hide Feature Panel until this section is ready */}
+          {/* {!comparisonVariable && <FeaturesPanel />} */}
         </MapContainer>
       </div>
       <div className="col-span-1 h-screen">
@@ -103,17 +117,17 @@ const MapView = ({ selectedGeography, selectedVariable, comparisonVariable, setI
           style={{ height: "100%", width: "100%" }}
           zoomControl={true}
         >
-            {/* Basemap tile layer */}
-            <TileLayer
+          {/* Basemap tile layer */}
+          <TileLayer
             // url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
             // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            opacity={0.7}  
+            opacity={0.7}
             maxZoom="19"
           />
-            {/* Label tile layer */}
-            {/* <TileLayer
+          {/* Label tile layer */}
+          {/* <TileLayer
               url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
               maxZoom="19"
               zIndex="1000"
