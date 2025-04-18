@@ -63,7 +63,7 @@ const MapView = ({
   useSyncMaps(mapRef1.current, mapRef2.current);
 
   return (
-    <div className="grid grid-cols-2 col-span-6 relative h-screen">
+    <div className="grid grid-cols-2 divide-x-2 divide-solid divide-stone-900 col-span-6 relative h-screen">
       <div
         className={
           comparisonVariable ? "col-span-1 h-screen" : "col-span-2 h-screen"
@@ -106,38 +106,42 @@ const MapView = ({
           {/* {!comparisonVariable && <FeaturesPanel />} */}
         </MapContainer>
       </div>
-      <div className="col-span-1 h-screen">
-        <MapContainer
-          ref={mapRef2}
-          key={`${selectedGeography}-${comparisonVariable}`} // centered but doesn't sync at all
-          // key={selectedGeography} // syncs but uncentered, doesn't work on new geos unless comparison var is deselected and reselected
-          className="map-container"
-          maxBoundsViscosity={1.0}
-          {...mapSettings}
-          style={{ height: "100%", width: "100%" }}
-          zoomControl={true}
-        >
-          {/* Basemap tile layer */}
-          <TileLayer
-            // url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-            // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            opacity={0.7}
-            maxZoom="19"
-          />
-          {/* Label tile layer */}
-          {/* <TileLayer
+
+      {/* Second Map Pane */}
+      {comparisonVariable && (
+        <div className="col-span-1 h-screen">
+          <MapContainer
+            ref={mapRef2}
+            key={`${selectedGeography}-${comparisonVariable}`} // centered but doesn't sync at all
+            // key={selectedGeography} // syncs but uncentered, doesn't work on new geos unless comparison var is deselected and reselected
+            className="map-container"
+            maxBoundsViscosity={1.0}
+            {...mapSettings}
+            style={{ height: "100%", width: "100%" }}
+            zoomControl={true}
+          >
+            {/* Basemap tile layer */}
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              // url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+              // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              opacity={0.7}
+              maxZoom="19"
+            />
+            {/* Label tile layer */}
+            <TileLayer
               url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
               maxZoom="19"
               zIndex="1000"
-            /> */}
-          <DataLayerContainer
-            selectedGeography={selectedGeography}
-            selectedVariable={comparisonVariable}
-          />
-        </MapContainer>
-      </div>
+            />
+            <DataLayerContainer
+              selectedGeography={selectedGeography}
+              selectedVariable={comparisonVariable}
+            />
+          </MapContainer>
+        </div>
+      )}
     </div>
   );
 };
