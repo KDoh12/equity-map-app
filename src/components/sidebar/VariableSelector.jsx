@@ -8,7 +8,7 @@ import {
   Description,
 } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
-import { CheckIcon } from '@heroicons/react/16/solid';
+import { CheckIcon } from "@heroicons/react/16/solid";
 import { appConfig, referenceData } from "../../config/config";
 import propTypes from "prop-types";
 import { useMemo, useState, useEffect } from "react";
@@ -38,7 +38,9 @@ const VariableSelector = ({
   };
 
   // Initialize selectedVariables state with the selectedVariable prop
-  const [selectedVariables, setSelectedVariables] = useState([selectedVariable]);
+  const [selectedVariables, setSelectedVariables] = useState([
+    selectedVariable,
+  ]);
   const [showLimitMessage, setShowLimitMessage] = useState(false); // * State to manage limit message
   const [limitMessageVariable, setLimitMessageVariable] = useState(null); // * State to manage variable key of limit message
 
@@ -108,46 +110,64 @@ const VariableSelector = ({
                         isGeographyAvailable(variableKey)
                       ) ? (
                         <div key={subcategoryKey} className="m-2">
-                          <h2 className="font-bold text-lg">
+                          <h2 className="font-bold text-lg text-blue-400">
                             {subcategoryKey}
                           </h2>
                           {Object.keys(
                             referenceData.categories[categoryKey].data
                               .subcategories[subcategoryKey]
-                          ).map((variableKey, index) => (
-                            isGeographyAvailable(variableKey) && (
-                              <div key={variableKey}>
-                                {showLimitMessage && limitMessageVariable === variableKey && (
-                                  <div className="text-red-500 text-sm mb-2">
-                                    You can only select up to two variables at a time.
-                                  </div>
-                                )}
-                                <Field className="flex items-stretch gap-2 self-start">
-                                  <Checkbox
-                                    value={variableKey}
-                                    checked={selectedVariables.includes(variableKey)}
-                                    onChange={() => handleVariableChange(variableKey)}
-                                    className="group size-6 rounded-md bg-white/10 p-1 ring-1 ring-white/15 ring-inset data-[checked]:bg-white m-1"
-                                  >
-                                    <CheckIcon className="hidden size-4 fill-black group-data-[checked]:block" />
-                                  </Checkbox>
-                                  <Label className="text-left">
-                                    {variableKey}
-                                    <Description>
-                                      {selectedVariables.includes(variableKey) || comparisonVariable === variableKey ? (
-                                        <span className="text-xs text-gray-400">
-                                          Dataset:{" "}
-                                          {referenceData.censusDataAPIs[
-                                            referenceData.variables[variableKey].dataset.displayedDataset
-                                          ].datasetName}
-                                        </span>
-                                      ) : null}
-                                    </Description>
-                                  </Label>
-                                </Field>
-                              </div>
-                            )
-                          ))}
+                          ).map(
+                            (variableKey, index) =>
+                              isGeographyAvailable(variableKey) && (
+                                <div key={variableKey}>
+                                  {showLimitMessage &&
+                                    limitMessageVariable === variableKey && (
+                                      <div className="text-red-500 text-sm mb-2">
+                                        You can only select up to two variables
+                                        at a time.
+                                      </div>
+                                    )}
+                                  <Field className="flex items-stretch gap-2 self-start">
+                                    <Checkbox
+                                      value={variableKey}
+                                      checked={selectedVariables.includes(
+                                        variableKey
+                                      )}
+                                      onChange={() =>
+                                        handleVariableChange(variableKey)
+                                      }
+                                      className="group w-6 h-6 rounded-md bg-white/10 p-1 ring-1 ring-white/15 ring-inset data-[checked]:bg-white m-1 flex items-center justify-center"
+                                      style={{
+                                        minWidth: "1.5rem",
+                                        minHeight: "1.5rem",
+                                      }}
+                                    >
+                                      <CheckIcon className="hidden size-4 fill-black group-data-[checked]:block" />
+                                    </Checkbox>
+                                    <Label className="text-left text-blue-200">
+                                      {variableKey}
+                                      <Description>
+                                        {selectedVariables.includes(
+                                          variableKey
+                                        ) ||
+                                        comparisonVariable === variableKey ? (
+                                          <span className="text-xs text-gray-400">
+                                            Dataset:{" "}
+                                            {
+                                              referenceData.censusDataAPIs[
+                                                referenceData.variables[
+                                                  variableKey
+                                                ].dataset.displayedDataset
+                                              ].datasetName
+                                            }
+                                          </span>
+                                        ) : null}
+                                      </Description>
+                                    </Label>
+                                  </Field>
+                                </div>
+                              )
+                          )}
                         </div>
                       ) : null
                     )}
@@ -160,7 +180,8 @@ const VariableSelector = ({
       )}
       {/* * Add a user-friendly message */}
       <div className="text-sm text-gray-700 mt-4">
-        Please note: You can select up to two variables at a time for comparison.
+        Please note: You can select up to two variables at a time for
+        comparison.
       </div>
     </div>
   );
