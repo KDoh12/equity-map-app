@@ -79,14 +79,18 @@ const VariableSelector = ({
       <h1 className="font-bold text-xl text-pretty m-2">
         Target Populations and General Equity Indicators
       </h1>
+      {/* * Add a user-friendly message */}
+      <div className="text-sm italic text-gray-300 mt-2 px-1">
+        Note: You can select up to two variables at a time for comparison.
+      </div>
       {Object.keys(referenceData.categories).map((categoryKey) =>
         categoryKey !== "_reference" ? (
           <Disclosure
             as="div"
             className="m-2 border h-full border-gray-200 rounded-lg"
             key={categoryKey}
-            // * Add defaultOpen prop for "Demographics (Total Population)" category
-            defaultOpen={categoryKey === "Demographics (Total Population)"}
+            // * Add defaultOpen prop for "Entrepreneurship (Total Population)" category
+            defaultOpen={categoryKey === "Entrepreneurship (Total Population)"}
           >
             {({ open }) => (
               <>
@@ -178,11 +182,6 @@ const VariableSelector = ({
           </Disclosure>
         ) : null
       )}
-      {/* * Add a user-friendly message */}
-      <div className="text-sm text-gray-700 mt-4">
-        Please note: You can select up to two variables at a time for
-        comparison.
-      </div>
     </div>
   );
 };
